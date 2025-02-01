@@ -26,10 +26,7 @@ export default function Home() {
           <div
             className='rounded-xl border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base w-full aspect-square hover:cursor-pointer'
             onClick={() => {
-              router.push({
-                pathname: '/game1',
-                query: search
-              });
+              router.push(`/game1?topic=${encodeURIComponent(search)}`);
             }}
             >
             True or False
@@ -37,10 +34,7 @@ export default function Home() {
           <div
             className='rounded-xl border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base w-full aspect-square hover:cursor-pointer'
             onClick={() => {
-              router.push({
-                pathname: '/game2',
-                query: search
-              });
+              router.push(`/game2?topic=${encodeURIComponent(search)}`);
             }}
             >
             Multiple Choice
@@ -48,10 +42,7 @@ export default function Home() {
           <div
             className='rounded-xl border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base w-full aspect-square hover:cursor-pointer'
             onClick={() => {
-              router.push({
-                pathname: '/game3',
-                query: search
-              });
+              router.push(`/game3?topic=${encodeURIComponent(search)}`);
             }}
             >
             Right or Wrong
