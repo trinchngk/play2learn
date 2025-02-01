@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { IoSearch } from "react-icons/io5";
 import { useState } from 'react';
 import Head from 'next/head';
-
+import './globals.css';
 
 export default function Home() {
   const router = useRouter();
@@ -19,19 +19,19 @@ export default function Home() {
       </Head>
 
       <div 
-        className="h-full min-h-screen font-Pixelify Sans text-white p-10 flex flex-col items-center justify-center"
+        className="h-full min-h-screen font-Pixelify Sans text-white p-10 flex flex-col items-center justify-center sliding-background"
         style={{
           backgroundImage: "url('/Checkered.png')",
           backgroundSize: "contain",  
           backgroundPosition: "center", 
           backgroundAttachment: "fixed", 
-          backgroundColor: "#FFFFFF",
+          // backgroundColor: "",
           maxWidth: "100vw", 
           maxHeight: "100vh" 
         }}
       >
         <img 
-          src="/Arcade Machine.png" 
+          src="/ArcadeMachine.png" 
           alt="Arcade Machine" 
           className="fixed top-3/16 w-full max-w-[1100px] h-auto items-center z-[1]" 
         />

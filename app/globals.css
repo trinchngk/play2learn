@@ -15,8 +15,35 @@
 }
 
 body {
-  background: var(--background) url('/closeup.png') no-repeat center center fixed;
+  background: var(--background) url('/closeupclc.png') no-repeat center center fixed;
   background-size: cover;
   color: var(--foreground);
   background: var(--background);
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.15);
+  }
+}
+
+.zoom-bg {
+  animation: zoomIn 3s ease forwards;
+  background-size: cover;
+}
+
+@keyframes slideBackground {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 100% 100%;
+  }
+}
+
+.sliding-background {
+  animation: slideBackground 20s linear infinite;
 }
