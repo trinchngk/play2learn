@@ -60,7 +60,7 @@ export default function Home() {
               }}
             >
               {game}
-            </div>
+            </div> 
           ))}
         </div>
       </div>
