@@ -27,7 +27,6 @@ export default function game2() {
         if (response.data?.questions) {
           setGameData(response.data.questions);
         }
-        console.log(gameData[0])
       } catch (err) {
         console.error('Error fetching questions:', err);
       }
@@ -63,16 +62,16 @@ export default function game2() {
           <h2>Question {currIndex + 1}</h2>
           <p>{gameData[currIndex]?.question}</p>
           <div>
-            <button onClick={() => userChoice(gameData[currIndex].choices[0])} style={{ margin: "10px", padding: "10px 20px" }}>
+            <button onClick={() => userChoice(gameData[currIndex].choices[0])} style={{ margin: "10px", padding: "10px 20px"}}>
             {gameData[currIndex].choices[0]}
             </button>
-            <button onClick={() => userChoice(gameData[currIndex].choices[1])} style={{ margin: "10px", padding: "10px 20px" }}>
+            <button onClick={() => userChoice(gameData[currIndex].choices[1])} style={{ margin: "10px", padding: "10px 20px"}}>
             {gameData[currIndex].choices[1]}
             </button>
-            <button onClick={() => userChoice(gameData[currIndex].choices[2])} style={{ margin: "10px", padding: "10px 20px" }}>
+            <button onClick={() => userChoice(gameData[currIndex].choices[2])} style={{ margin: "10px", padding: "10px 20px"}}>
             {gameData[currIndex].choices[2]}
             </button>
-            <button onClick={() => userChoice(gameData[currIndex].choices[3])} style={{ margin: "10px", padding: "10px 20px" }}>
+            <button onClick={() => userChoice(gameData[currIndex].choices[3])} style={{ margin: "10px", padding: "10px 20px"}}>
             {gameData[currIndex].choices[3]}
             </button>
           </div>
