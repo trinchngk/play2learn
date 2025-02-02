@@ -2,6 +2,7 @@
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { PropagateLoader } from 'react-spinners';
 import React from "react";
 
 export default function Game2() {
@@ -20,7 +21,7 @@ export default function Game2() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post(`https://r9s90fv4id.execute-api.us-east-1.amazonaws.com/multiplechoiceopenai`, {
+        const response = await axios.post(process.env.NEXT_PUBLIC_MC_API, {
           topic: topic
         });
        
@@ -181,7 +182,7 @@ export default function Game2() {
           </div>
         ) : (
           <div className="text-center py-8">
-            <p>Loading questions...</p>
+            <PropagateLoader color="#8075ff" size={25}/>
           </div>
         )}
       </div>

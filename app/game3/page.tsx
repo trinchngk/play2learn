@@ -42,7 +42,7 @@ export default function Game3() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.post("https://r9s90fv4id.execute-api.us-east-1.amazonaws.com/rightorwrongopenai", {
+        const response = await axios.post(process.env.NEXT_PUBLIC_RW_API, {
           topic: topic,
         });
 
