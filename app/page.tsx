@@ -14,7 +14,7 @@ export default function Home() {
     <>
      <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+        <link rel="preconnect" href="https://fonts.gstatic.com"/>
         <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=VT323&display=swap" rel="stylesheet" />
       </Head>
 
@@ -37,14 +37,14 @@ export default function Home() {
         <img 
           src="/logo.png" 
           alt="Logo" 
-          className="flex top-0 w-85vh center items-center max-w-[900px] h-85vh z-[1] mb-5 hover:scale-105 transform transition duration-1" 
+          className="flex top-0 w-85vh center items-center max-w-[900px] h-85vh z-[1] mb-5" 
         />
 
         <div className="flex justify-center items-center gap-x-4 w-1/3 z-[2]">
           <input
             type="text"
             value={search}
-            className="bg-[#111d4a] text-white p-3 rounded-xl w-full ml-10 mr-3 focus:outline-none focus:ring focus:ring-blue-300 hover:scale-105 transform transition duration-1"
+            className="bg-white text-[#644ca8] p-3 rounded-xl w-full ml-10 mr-3 focus:outline-none focus:ring focus:ring-blue-300"
             placeholder="Choose Your Topic..."
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -54,7 +54,7 @@ export default function Home() {
           {["True or False", "Multiple Choice", "Right or Wrong"].map((game, index) => (
             <div
               key={index}
-              className="bg-[#f2dc16] hover:bg-[#edb835] border border-4 border-white p-3 flex text-black font-bold items-center justify-center font-PixelifySans text-sm sm:text-base w-full hover:cursor-pointer rounded-lg hover:scale-105 transform transition duration-1"
+              className="bg-[#f2dc16] hover:bg-[#edb835] border border-4 border-white p-3 flex text-black font-bold items-center justify-center font-PixelifySans text-sm sm:text-base w-full  hover:cursor-pointer"
               onClick={() => {
                 router.push(`/game${index + 1}?topic=${encodeURIComponent(search)}`);
               }}
