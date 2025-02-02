@@ -106,7 +106,7 @@ export default function Game3() {
         const newMissiles = choices.map((choice, index) => ({
           x: spacing * index + (spacing - MISSILE_SIZE) / 2,
           y: -MISSILE_SIZE,
-          speed: 1,
+          speed: 0.75,
           choice: choice,
           isCorrect: gameData[currIndex].correctAnswer.includes(choice)
         }));
