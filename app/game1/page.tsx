@@ -30,12 +30,11 @@ export default function Game1() {
   const [message, setMessage] = useState('');
   const [isAnimating, setIsAnimating] = useState(false);
   const router = useRouter();
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         console.log(topic);
-        const response = await axios.post<GameData>(`https://r9s90fv4id.execute-api.us-east-1.amazonaws.com/truefalseopenai`, {
+        const response = await axios.post<GameData>(process.env.NEXT_PUBLIC_TRUE_FALSE_API, {
           topic: topic
         });
         console.log(response.data.questions);
