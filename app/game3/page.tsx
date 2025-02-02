@@ -275,6 +275,7 @@ export default function Game3() {
           <p className="text-sm text-gray-400">Collect the correct answers by touching them with your player!</p>
         </div>
       )}
+
     </div>
   );
 }
