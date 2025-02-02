@@ -7,6 +7,11 @@ const PLAYER_SIZE = 40;
 const MISSILE_SIZE = 20;
 const GAME_HEIGHT = 400;
 const GAME_WIDTH = 600;
+const MAX_SCORE = 10;
+const SCORE_INCREMENT = 1;  // Changed from 2 to 1
+const LIVES_DECREMENT = 1;  // Changed from 2 to 1
+const STARTING_LIVES = 3;   // Changed from 6 to 3 since we're decrementing by 1 now
+
 
 export default function Game3() {
   const searchParams = useSearchParams();
@@ -17,15 +22,20 @@ export default function Game3() {
   const [currIndex, setCurrIndex] = useState(0);
   const [userScore, setUserScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [gameWon, setGameWon] = useState(false);
   
   const [playerPosition, setPlayerPosition] = useState({ x: GAME_WIDTH / 2, y: GAME_HEIGHT - PLAYER_SIZE - 10 });
   const [missiles, setMissiles] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [lives, setLives] = useState(3);
+  const [lives, setLives] = useState(STARTING_LIVES);
   const [questionStartTime, setQuestionStartTime] = useState(null);
   const [missilesSpawned, setMissilesSpawned] = useState(false);
   const gameLoopRef = useRef(null);
 
+  const checkMissedMissiles = (missiles) => {
+    return missiles.some(missiles => missile.y >= GAME_HEIGHT);
+  };
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -44,6 +54,7 @@ export default function Game3() {
     fetchData();
   }, [topic]);
 
+  
   useEffect(() => {
     if (isPlaying && gameData[currIndex]) {
       setMissiles([]);
@@ -54,7 +65,7 @@ export default function Game3() {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (!isPlaying || gameOver) return;
+      if (!isPlaying || gameOver || gameWon) return;
       
       const MOVE_AMOUNT = 20;
       
@@ -76,10 +87,10 @@ export default function Game3() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isPlaying, gameOver]);
+  }, [isPlaying, gameOver, gameWon]);
 
   useEffect(() => {
-    if (!isPlaying || gameOver || !gameData[currIndex]) return;
+    if (!isPlaying || gameOver || gameWon || !gameData[currIndex]) return;
 
     const gameLoop = () => {
       if (!missilesSpawned) {
@@ -104,39 +115,65 @@ export default function Game3() {
           y: missile.y + missile.speed
         }));
 
-        updatedMissiles.forEach(missile => {
+        let hitMissile = null;
+        
+        // Find the first missile that collides
+        for (const missile of updatedMissiles) {
           if (checkCollision(missile, playerPosition)) {
-            if (missile.isCorrect) {
-              setUserScore(prev => prev + 1);
-            } else {
-              setLives(prev => {
-                const newLives = prev - 1;
-                if (newLives === 0) {
-                  setGameOver(true);
-                  setIsPlaying(false);
-                }
-                return newLives;
-              });
-            }
+            hitMissile = missile;
+            break;
+          }
+        }
+
+        // Handle collision if any
+        if (hitMissile) {
+          if (hitMissile.isCorrect) {
+            const nextScore = userScore + SCORE_INCREMENT;
+            setUserScore(nextScore);
             
-            if (currIndex === gameData.length - 1) {
+            // Only move to next question if we haven't won
+            if (nextScore < MAX_SCORE) {
+              const nextIndex = currIndex + 1;
+              if (nextIndex < gameData.length) {
+                setCurrIndex(nextIndex);
+                setMissilesSpawned(false); // Reset missiles spawned flag for next question
+              }
+            } else {
+              setGameWon(true);
+              setIsPlaying(false);
+            }
+            return []; // Clear missiles after correct answer
+          } else {
+            const nextLives = lives - LIVES_DECREMENT;
+            setLives(nextLives);
+            if (nextLives <= 0) {
               setGameOver(true);
               setIsPlaying(false);
-            } else {
-              setCurrIndex(prev => prev + 1);
+              return []; // Clear missiles on game over
             }
+            // Reset for the same question after wrong answer
+            setMissilesSpawned(false);
+            return []; // Clear missiles but continue playing
           }
-        });
+        }
 
+        // Remove missiles that are off screen
         return updatedMissiles.filter(missile => missile.y < GAME_HEIGHT);
       });
 
-      gameLoopRef.current = requestAnimationFrame(gameLoop);
+      // Only continue the game loop if the game is still active
+      if (!gameOver && !gameWon) {
+        gameLoopRef.current = requestAnimationFrame(gameLoop);
+      }
     };
 
     gameLoopRef.current = requestAnimationFrame(gameLoop);
-    return () => cancelAnimationFrame(gameLoopRef.current);
-  }, [isPlaying, gameOver, playerPosition, currIndex, gameData, missilesSpawned]);
+    return () => {
+      if (gameLoopRef.current) {
+        cancelAnimationFrame(gameLoopRef.current);
+      }
+    };
+  }, [isPlaying, gameOver, gameWon, playerPosition, currIndex, gameData, missilesSpawned, userScore, lives]);
 
   const checkCollision = (missile, player) => {
     return (
@@ -150,7 +187,8 @@ export default function Game3() {
   const startGame = () => {
     setIsPlaying(true);
     setGameOver(false);
-    setLives(3);
+    setGameWon(false);
+    setLives(STARTING_LIVES);  // Using the new STARTING_LIVES constant
     setUserScore(0);
     setCurrIndex(0);
     setMissiles([]);
@@ -165,7 +203,7 @@ export default function Game3() {
         Lives: {lives} | Score: {userScore} | Question: {currIndex + 1}/10
       </div>
       
-      {!isPlaying && !gameOver && (
+      {!isPlaying && !gameOver && !gameWon && (
         <button 
           onClick={startGame}
           className="px-6 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors mb-4"
@@ -174,10 +212,10 @@ export default function Game3() {
         </button>
       )}
       
-      {gameOver && (
+      {(gameOver || gameWon) && (
         <div className="text-center mb-4">
-          <h2 className="text-2xl mb-2">Game Over!</h2>
-          <p className="mb-4">Final Score: {userScore} out of {gameData.length}</p>
+          <h2 className="text-2xl mb-2">{gameWon ? 'Congratulations!' : 'Game Over!'}</h2>
+          <p className="mb-4">Final Score: {userScore} points</p>
           <button 
             onClick={startGame}
             className="px-6 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
