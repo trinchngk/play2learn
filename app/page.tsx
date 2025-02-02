@@ -57,7 +57,7 @@ export default function Home() {
               key={index}
               className="rounded-xl border border-transparent transition-colors flex items-center justify-center bg-foreground text-background hover:bg-[#383838] dark:hover:bg-[#ccc] font-PixelifySans text-sm sm:text-base w-full aspect-square hover:cursor-pointer"
               onClick={() => {
-                router.push(`/game${index + 1}?search=${encodeURIComponent(search)}`);
+                router.push(`/game${index + 1}?topic=${encodeURIComponent(search)}`);
               }}
             >
               {game}
