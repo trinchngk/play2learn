@@ -144,12 +144,12 @@ export default function Game2() {
                   ref={(el) => buttonRefs.current[index] = el}
                   onClick={() => userChoice(choice, index)}
                   className={`relative w-24 h-24 rounded-full focus:outline-none
-                    ${currentTargetIndex === index ? 'ring-4 ring-red-500 ring-opacity-50 animate-pulse' : ''}`}
+                    ${currentTargetIndex === index ? 'ring-4 ring-[#D8482B] ring-opacity-50 animate-pulse' : ''}`}
                 >
                   <div className="absolute inset-0 rounded-full border-2 border-black shadow-lg">
-                    <div className="absolute inset-2 rounded-full bg-red-500">
+                    <div className="absolute inset-2 rounded-full bg-[#D8482B]">
                       <div className="absolute inset-3 rounded-full bg-white">
-                        <div className="absolute inset-3 rounded-full bg-red-500">
+                        <div className="absolute inset-3 rounded-full bg-[#D8482B]">
                           <div className="absolute inset-3 rounded-full bg-white" />
                         </div>
                       </div>
@@ -166,13 +166,13 @@ export default function Game2() {
               top: `${ballPosition.y}px`,
               borderLeft: '10px solid transparent',
               borderRight: '10px solid transparent',
-              borderBottom: '20px solid red',
+              borderBottom: '20px solid #D8482B',
               transform: 'translate(-50%, -50%)'
             }}
           />
           <div 
             ref={blueRectRef}
-            className="w-24 h-6 bg-blue-500 mt-32"
+            className="w-24 h-6 bg-[#644CA8] mt-32"
           />
           <p className="mt-4 text-gray-600">Press SPACE to shoot when the target is highlighted!</p>
           <p className="mt-2 text-gray-600">Or click the targets directly!</p>
