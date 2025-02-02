@@ -206,7 +206,7 @@ export default function Game3() {
       {!isPlaying && !gameOver && !gameWon && (
         <button 
           onClick={startGame}
-          className="px-6 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors mb-4"
+          className="px-6 py-2 bg-[#111d4a] rounded-lg hover:bg-[#644ca8] transition-colors mb-4"
         >
           Start Game
         </button>
@@ -218,7 +218,7 @@ export default function Game3() {
           <p className="mb-4">Final Score: {userScore} points</p>
           <button 
             onClick={startGame}
-            className="px-6 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+            className="px-6 py-2 bg-[#111d4a] rounded-lg hover:bg-[#644ca8] transition-colors"
           >
             Play Again
           </button>
@@ -231,7 +231,7 @@ export default function Game3() {
       >
         {/* Player */}
         <div
-          className="absolute bg-blue-500 rounded-lg transition-all duration-100"
+          className="absolute bg-[#F2DC16] rounded-lg transition-all duration-100"
           style={{
             width: PLAYER_SIZE,
             height: PLAYER_SIZE,
@@ -259,7 +259,7 @@ export default function Game3() {
             
             {/* Missile */}
             <div
-              className={`absolute rounded-full ${missile.isCorrect ? 'bg-green-500' : 'bg-red-500'}`}
+              className={`absolute rounded-full ${missile.isCorrect ? 'bg-[#8075ff]' : 'bg-[#8075ff]'}`}
               style={{
                 width: MISSILE_SIZE,
                 height: MISSILE_SIZE,
