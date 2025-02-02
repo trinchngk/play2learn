@@ -1,12 +1,10 @@
 "use client";
-import { useSearchParams, useRouter } from 'next/navigation'
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import React from "react";
+import { useSearchParams, useRouter } from 'next/navigation';
 
-export default function game2() {
-  
-  const searchParams = useSearchParams()
+export default function GamePage() {
+  const searchParams = useSearchParams();
   const topic = searchParams.get("topic");
   const router = useRouter();
 
@@ -18,15 +16,10 @@ export default function game2() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post(`https://r9s90fv4id.execute-api.us-east-1.amazonaws.com/multiplechoiceopenai`, {
+        const response = await axios.post('https://r9s90fv4id.execute-api.us-east-1.amazonaws.com/multiplechoiceopenai', {
           topic: topic
         });
-
-        console.log(response)
-        
-        if (response.data?.questions) {
-          setGameData(response.data.questions);
-        }
+        setGameData(response.data.questions);
       } catch (err) {
         console.error('Error fetching questions:', err);
       }
@@ -58,24 +51,78 @@ export default function game2() {
           <button onClick={() => router.push("/")}>Back to Home</button>
         </div>
       ) : gameData.length > 0 ? (
-        <div>
+        <div style={{ textAlign: "center", justifyContent: "center", alignItems: "center", display: "flex", flexDirection: "column" }}>
           <h2>Question {currIndex + 1}</h2>
-          <p>{gameData[currIndex]?.question}</p>
-          <div>
-            <button onClick={() => userChoice(gameData[currIndex].choices[0])} style={{ margin: "10px", padding: "10px 20px"}}>
-            {gameData[currIndex].choices[0]}
-            </button>
-            <button onClick={() => userChoice(gameData[currIndex].choices[1])} style={{ margin: "10px", padding: "10px 20px"}}>
-            {gameData[currIndex].choices[1]}
-            </button>
-            <button onClick={() => userChoice(gameData[currIndex].choices[2])} style={{ margin: "10px", padding: "10px 20px"}}>
-            {gameData[currIndex].choices[2]}
-            </button>
-            <button onClick={() => userChoice(gameData[currIndex].choices[3])} style={{ margin: "10px", padding: "10px 20px"}}>
-            {gameData[currIndex].choices[3]}
-            </button>
-          </div>
+          <p style={{ color: "blue" }}>{gameData[currIndex]?.question}</p>
           <p>Score: {userScore}</p>
+          <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+            {gameData[currIndex].choices.map((choice, index) => (
+              <div key={index} style={{ margin: "10px", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", maxWidth: "100px", wordWrap: "break-word" }}>
+                <div style={{ color: "blue", fontWeight: "bold", marginBottom: "5px" }}>{choice}</div>
+                <button
+                  onClick={() => userChoice(choice)}
+                  style={{
+                    padding: "0",
+                    borderRadius: "50%",
+                    width: "100px",
+                    height: "100px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "#f0f0f0",
+                    border: "2px solid #000",
+                    boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
+                    fontSize: "16px",
+                    cursor: "pointer",
+                    position: "relative",
+                  }}
+                >
+                  <div style={{
+                    width: "80px",
+                    height: "80px",
+                    borderRadius: "50%",
+                    backgroundColor: "red",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    position: "absolute",
+                  }}>
+                    <div style={{
+                      width: "60px",
+                      height: "60px",
+                      borderRadius: "50%",
+                      backgroundColor: "white",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}>
+                      <div style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                        backgroundColor: "red",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}>
+                        <div style={{
+                          width: "20px",
+                          height: "20px",
+                          borderRadius: "50%",
+                          backgroundColor: "white",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}>
+                          {/* Removed the choice text from here */}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
       ) : (
         <p>Loading questions...</p>
