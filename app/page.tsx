@@ -12,7 +12,7 @@ export default function Home() {
 
   return (
     <>
-      <Head>
+     <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
         <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=VT323&display=swap" rel="stylesheet" />
@@ -30,12 +30,11 @@ export default function Home() {
           maxHeight: "100vh" 
         }}
       >
-        <img 
+      <img 
           src="/ArcadeMachine.png" 
           alt="Arcade Machine" 
-          className="fixed top-3/16 w-full max-w-[1100px] h-auto items-center z-[1]" 
+          className="fixed top-3/16 w-full max-w-[1250px] h-auto items-center z-[1] absolute bottom-0 center" 
         />
-
         <img 
           src="/logo.png" 
           alt="Logo" 
@@ -66,6 +65,7 @@ export default function Home() {
           ))}
         </div>
       </div>
+ 
     </>
   );
 }
