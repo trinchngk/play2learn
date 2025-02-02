@@ -3,6 +3,7 @@
 'use client'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react';
+import { PropagateLoader } from 'react-spinners';
 import axios from 'axios';
 import React from 'react';
 
@@ -106,32 +107,32 @@ export default function Game1() {
                   <p className="text-xl">Final Score: {userScore} / {gameData.length}</p>
                   <button 
                     onClick={() => router.push('/')}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors"
+                    className="bg-[#111d4a] hover:bg-[#644ca8] text-white px-6 py-2 rounded-2xl transition-colors"
                   >
                     Back to Home
                   </button>
                 </div>
               ) : gameData.length > 0 ? (
-                <div className="space-y-6">
+                <div className="space-y-6 p-10">
                   <div className="flex justify-between items-center">
                     <h2 className="text-xl font-semibold">Question {currIndex + 1} / {gameData.length}</h2>
                     <h2 className="text-xl font-semibold">Score: {userScore}</h2>
                   </div>
                   
-                  <p className="text-lg text-black bg-gray-50 p-4 rounded-lg shadow">
+                  <p className="text-lg text-white bg-[#111d4a] p-4 rounded-lg shadow">
                     {gameData[currIndex]?.question}
                   </p>
 
-                  <div className="relative w-full h-64 bg-gray-100 rounded-lg overflow-hidden">
+                  <div className="relative w-full h-64 bg-black rounded-lg overflow-hidden">
                     <div 
                       className={`absolute inset-0 flex items-center justify-center z-10 text-2xl font-bold ${
-                        message === 'Blocked!' ? 'text-green-500' : 'text-red-500'
+                        message === 'Blocked!' ? 'text-[#46f0df]' : 'text-red-500'
                       }`}
                     >
                       {message}
                     </div>
                     <div 
-                      className="absolute w-6 h-6 bg-red-500 rounded-full transition-all duration-1000 ease-in-out"
+                      className="absolute w-6 h-6 bg-[#46f0df] rounded-full transition-all duration-1000 ease-in-out"
                       style={{
                         left: `${ballPosition.x}%`,
                         top: `${ballPosition.y}%`,
@@ -139,13 +140,13 @@ export default function Game1() {
                       }}
                     />
                     <div 
-                      className="absolute bottom-8 w-24 h-2 bg-blue-500 transition-all duration-300 ease-in-out"
+                      className="absolute bottom-8 w-24 h-2 bg-[#8075ff] transition-all duration-300 ease-in-out"
                       style={{
                         left: `${paddleX}%`,
                         transform: 'translateX(-50%)'
                       }}
                     />
-                    <div className="absolute bottom-0 left-1/2 w-96 h-2 bg-green-500 -translate-x-1/2" />
+                    <div className="absolute bottom-0 left-1/2 w-96 h-2 bg-[#f2dc16] -translate-x-1/2" />
                   </div>
 
                   <div className="flex justify-center gap-4">
@@ -154,9 +155,9 @@ export default function Game1() {
                         key={choice}
                         onClick={() => !isAnimating && handleUserChoice(choice)}
                         disabled={isAnimating}
-                        className={`px-8 py-3 rounded-lg text-black font-semibold transition-all
+                        className={`px-8 py-3 rounded-lg text-white bg-[#111d4a] hover:bg-[#644ca8] font-semibold transition-all
                           ${isAnimating ? 'opacity-50 cursor-not-allowed' : 'hover:transform hover:scale-105'}
-                          ${choice === 'True' ? 'bg-white' : 'bg-white'}
+                          ${choice === 'True' ? 'bg-[#111d4a]' : 'bg-[#111d4a]'}
                         `}
                       >
                         {choice}
@@ -166,8 +167,7 @@ export default function Game1() {
                 </div>
             ) : (
               <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-                <p className="text-gray-600">Loading questions...</p>
+                <PropagateLoader color="#8075ff" size={25}/>
               </div>
             )}
         </div>   

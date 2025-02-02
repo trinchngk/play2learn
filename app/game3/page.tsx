@@ -1,6 +1,7 @@
 'use client'
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
+import { PropagateLoader } from 'react-spinners';
 import axios from 'axios';
 
 const PLAYER_SIZE = 40;
@@ -30,6 +31,7 @@ export default function Game3() {
   const [lives, setLives] = useState(STARTING_LIVES);
   const [questionStartTime, setQuestionStartTime] = useState(null);
   const [missilesSpawned, setMissilesSpawned] = useState(false);
+  const [loading, setLoading] = useState(false)
   const gameLoopRef = useRef(null);
 
   const checkMissedMissiles = (missiles) => {
@@ -39,6 +41,7 @@ export default function Game3() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const response = await axios.post("https://r9s90fv4id.execute-api.us-east-1.amazonaws.com/rightorwrongopenai", {
           topic: topic,
         });
@@ -46,7 +49,10 @@ export default function Game3() {
         if (response.data?.questions) {
           setGameData(response.data.questions);
         }
+
+        setLoading(false);
       } catch (err) {
+        setLoading(false);
         console.error("Error fetching questions:", err);
       }
     };
@@ -198,84 +204,93 @@ export default function Game3() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4">
-      <div className="mb-4 text-xl">
-        Lives: {lives} | Score: {userScore} | Question: {currIndex + 1}/10
-      </div>
-      
-      {!isPlaying && !gameOver && !gameWon && (
-        <button 
-          onClick={startGame}
-          className="px-6 py-2 bg-[#111d4a] rounded-lg hover:bg-[#644ca8] transition-colors mb-4"
-        >
-          Start Game
-        </button>
-      )}
-      
-      {(gameOver || gameWon) && (
-        <div className="text-center mb-4">
-          <h2 className="text-2xl mb-2">{gameWon ? 'Congratulations!' : 'Game Over!'}</h2>
-          <p className="mb-4">Final Score: {userScore} points</p>
-          <button 
-            onClick={startGame}
-            className="px-6 py-2 bg-[#111d4a] rounded-lg hover:bg-[#644ca8] transition-colors"
-          >
-            Play Again
-          </button>
-        </div>
-      )}
-      
-      <div 
-        className="relative bg-gray-800 rounded-lg overflow-hidden"
-        style={{ width: GAME_WIDTH, height: GAME_HEIGHT }}
-      >
-        {/* Player */}
-        <div
-          className="absolute bg-[#F2DC16] rounded-lg transition-all duration-100"
-          style={{
-            width: PLAYER_SIZE,
-            height: PLAYER_SIZE,
-            left: playerPosition.x,
-            top: playerPosition.y,
-          }}
-        />
-        
-        {/* Missiles with enhanced text labels */}
-        {missiles.map((missile, index) => (
-          <div key={index} className="absolute" style={{ left: missile.x, top: missile.y }}>
-            {/* Background for text */}
-            <div 
-              className="absolute bg-gray-800 bg-opacity-75 px-2 py-1 rounded transform -translate-x-1/2 whitespace-nowrap"
-              style={{
-                left: MISSILE_SIZE / 2,
-                top: -30,
-                maxWidth: '150px'
-              }}
-            >
-              <div className="text-xs font-medium" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {missile.choice}
+    <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
+      <div className="absolute inset-0 zoom-bg bg-background bg-[url('/closeup.png')] bg-no-repeat bg-center bg-fixed"></div>
+        <div className="relative z-10 Screen w-full">
+          <div className="flex flex-col items-center justify-center min-h-screen text-white p-4 max-w-2xl mx-auto pt-4 mt-5">
+            {loading ? (
+              <div className="text-center py-8">
+                <PropagateLoader color="#8075ff" size={25}/>
               </div>
-            </div>
-            
-            {/* Missile */}
-            <div
-              className={`absolute rounded-full ${missile.isCorrect ? 'bg-[#8075ff]' : 'bg-[#8075ff]'}`}
-              style={{
-                width: MISSILE_SIZE,
-                height: MISSILE_SIZE,
-              }}
-            />
-          </div>
-        ))}
+            ) : (
+              <>
+                <div className="mb-4 text-xl">
+                  Lives: {lives} | Score: {userScore} | Question: {currIndex + 1}/10
+                </div>
+                {(gameOver || gameWon) && (
+                  <div className="text-center mb-4">
+                    <h2 className="text-2xl mb-2">{gameWon ? 'Congratulations!' : 'Game Over!'}</h2>
+                    <p className="mb-4">Final Score: {userScore} points</p>
+                    <button 
+                      onClick={startGame}
+                      className="px-6 py-2 bg-[#111d4a] rounded-lg hover:bg-[#644ca8] transition-colors"
+                    >
+                      Play Again
+                    </button>
+                  </div>
+                )}
+                
+                <div 
+                  className="relative bg-gray-800 rounded-lg overflow-hidden"
+                  style={{ width: GAME_WIDTH, height: GAME_HEIGHT }}
+                >
+                  {/* Player */}
+                  <div
+                    className="absolute bg-[#F2DC16] rounded-lg transition-all duration-100"
+                    style={{
+                      width: PLAYER_SIZE,
+                      height: PLAYER_SIZE,
+                      left: playerPosition.x,
+                      top: playerPosition.y,
+                    }}
+                  />
+                  
+                  {/* Missiles with enhanced text labels */}
+                  {missiles.map((missile, index) => (
+                    <div key={index} className="absolute" style={{ left: missile.x, top: missile.y }}>
+                      {/* Background for text */}
+                      <div 
+                        className="absolute bg-gray-800 bg-opacity-75 px-2 py-1 rounded transform -translate-x-1/2 whitespace-nowrap"
+                        style={{
+                          left: MISSILE_SIZE / 2,
+                          top: -30,
+                          maxWidth: '150px'
+                        }}
+                      >
+                        <div className="text-xs font-medium" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          {missile.choice}
+                        </div>
+                      </div>
+                      
+                      {/* Missile */}
+                      <div
+                        className={`absolute rounded-full ${missile.isCorrect ? 'bg-[#8075ff]' : 'bg-[#8075ff]'}`}
+                        style={{
+                          width: MISSILE_SIZE,
+                          height: MISSILE_SIZE,
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+                {!isPlaying && !gameOver && !gameWon && (
+                  <button 
+                    onClick={startGame}
+                    className="mt-4 px-6 py-2 bg-[#111d4a] rounded-lg hover:bg-[#644ca8] transition-colors mb-4"
+                  >
+                    Start Game
+                  </button>
+                )}
+                {isPlaying && gameData[currIndex] && (
+                  <div className="mt-4 text-center max-w-xl">
+                    <p className="mb-2 text-lg font-semibold">{gameData[currIndex].question}</p>
+                    <p className="text-sm text-gray-400">Collect the correct answers by touching them with your player!</p>
+                  </div>
+                )}              
+              </>
+            )}
+        </div>   
       </div>
-      
-      {isPlaying && gameData[currIndex] && (
-        <div className="mt-4 text-center max-w-xl">
-          <p className="mb-2 text-lg font-semibold">{gameData[currIndex].question}</p>
-          <p className="text-sm text-gray-400">Collect the correct answers by touching them with your player!</p>
-        </div>
-      )}
-
     </div>
   );
 }

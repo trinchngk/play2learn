@@ -25,7 +25,6 @@ export default function Home() {
           backgroundSize: "contain",  
           backgroundPosition: "center", 
           backgroundAttachment: "fixed", 
-          // backgroundColor: "",
           maxWidth: "100vw", 
           maxHeight: "100vh" 
         }}
@@ -38,14 +37,14 @@ export default function Home() {
         <img 
           src="/logo.png" 
           alt="Logo" 
-          className="flex top-0 w-85vh center items-center max-w-[900px] h-85vh z-[1]" 
+          className="flex top-0 w-85vh center items-center max-w-[900px] h-85vh z-[1] mb-5" 
         />
 
         <div className="flex justify-center items-center gap-x-4 w-1/3 z-[2]">
           <input
             type="text"
             value={search}
-            className="bg-white text-black p-3 rounded-xl w-full ml-10 mr-3 focus:outline-none focus:ring focus:ring-blue-300"
+            className="bg-white text-[#644ca8] p-3 rounded-xl w-full ml-10 mr-3 focus:outline-none focus:ring focus:ring-blue-300"
             placeholder="Choose Your Topic..."
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -55,7 +54,7 @@ export default function Home() {
           {["True or False", "Multiple Choice", "Right or Wrong"].map((game, index) => (
             <div
               key={index}
-              className="rounded-xl border border-transparent transition-colors flex items-center justify-center bg-foreground text-background hover:bg-[#383838] dark:hover:bg-[#ccc] font-PixelifySans text-sm sm:text-base w-full aspect-square hover:cursor-pointer"
+              className="bg-[#edb835] border border-4 border-white p-3 flex text-black font-bold items-center justify-center font-PixelifySans text-sm sm:text-base w-full  hover:cursor-pointer"
               onClick={() => {
                 router.push(`/game${index + 1}?topic=${encodeURIComponent(search)}`);
               }}
