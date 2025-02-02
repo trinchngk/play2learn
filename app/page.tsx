@@ -54,7 +54,7 @@ export default function Home() {
           {["True or False", "Multiple Choice", "Right or Wrong"].map((game, index) => (
             <div
               key={index}
-              className="bg-[#f2dc16] hover:bg-[#edb835] border border-4 border-white p-3 flex text-black font-bold items-center justify-center font-PixelifySans text-sm sm:text-base w-full  hover:cursor-pointer hover:scale-110 transform transition duration-1 rounded-lg"
+              className="bg-[#f2dc16] hover:bg-[#edb835] border border-4 border-white p-3 flex text-black font-bold items-center justify-center font-PixelifySans text-sm sm:text-base w-full  hover:cursor-pointer"
               onClick={() => {
                 router.push(`/game${index + 1}?topic=${encodeURIComponent(search)}`);
               }}
