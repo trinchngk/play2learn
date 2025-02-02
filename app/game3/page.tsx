@@ -214,22 +214,22 @@ export default function Game3() {
               </div>
             ) : (
               <>
-                <div className="mb-4 text-xl">
-                  Lives: {lives} | Score: {userScore} | Question: {currIndex + 1}/10
-                </div>
-                {(gameOver || gameWon) && (
+                {(gameOver || gameWon) ? (
                   <div className="text-center mb-4">
                     <h2 className="text-2xl mb-2">{gameWon ? 'Congratulations!' : 'Game Over!'}</h2>
                     <p className="mb-4">Final Score: {userScore} points</p>
                     <button 
                       onClick={startGame}
-                      className="px-6 py-2 bg-[#111d4a] rounded-lg hover:bg-[#644ca8] transition-colors"
+                      className="px-6 py-2 bg-[#111d4a] rounded-lg hover:bg-[#644ca8] transition-colors hover:scale-105 transform transition duration-1"
                     >
                       Play Again
                     </button>
                   </div>
+                ) : (
+                  <div className="mb-4 text-xl">
+                    Lives: {lives} | Score: {userScore} | Question: {currIndex + 1}/10
+                  </div>                  
                 )}
-                
                 <div 
                   className="relative bg-gray-800 rounded-lg overflow-hidden"
                   style={{ width: GAME_WIDTH, height: GAME_HEIGHT }}
@@ -276,7 +276,7 @@ export default function Game3() {
                 {!isPlaying && !gameOver && !gameWon && (
                   <button 
                     onClick={startGame}
-                    className="mt-4 px-6 py-2 bg-[#111d4a] rounded-lg hover:bg-[#644ca8] transition-colors mb-4"
+                    className="mt-4 px-6 py-2 bg-[#111d4a] rounded-lg hover:bg-[#644ca8] transition-colors mb-4 hover:scale-105 transform transition duration-1"
                   >
                     Start Game
                   </button>
